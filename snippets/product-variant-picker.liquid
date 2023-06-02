@@ -22,10 +22,28 @@
       {{ block.shopify_attributes }}
     >
       {%- for option in product.options_with_values -%}
-        <fieldset class="js product-form__input">
-          <legend class="form__label">{{ option.name }}</legend>
-          {% render 'product-variant-options', product: product, option: option, block: block %}
-        </fieldset>
+        {% if section.settings.change_size_picker_type and option.name == "Size" or option.name == "size" %}
+          <div class="product-form__input product-form__input--dropdown">
+            <label class="form__label" for="Option-{{ section.id }}-{{ forloop.index0 }}">
+              {{ option.name }}
+            </label>
+            <div class="select">
+              <select onchange="ecomchange(this)"
+                id="Option-{{ section.id }}-{{ forloop.index0 }}"
+                class="select__select"
+                name="options[{{ option.name | escape }}]"
+                form="{{ product_form_id }}"
+              >
+                {% render 'product-variant-options-1', product: product, option: option, block: block %}
+              </select>
+              {% render 'icon-caret' %}
+            </div>
+          </div>
+        {% endif %}
+          <fieldset class="js product-form__input {% if section.settings.change_size_picker_type and option.name == "Size" or option.name == "size" %} hide-dropdown{% endif %}">
+            <legend class="form__label check-{{ option.name }}">{{ option.name }}</legend>
+            {% render 'product-variant-options', product: product, option: option, block: block %}
+          </fieldset>
       {%- endfor -%}
       <script type="application/json">
         {{ product.variants | json }}

@@ -46,6 +46,34 @@
   -%}
   
   {%- if block.settings.picker_type == 'button' -%}
+    {% if section.settings.change_size_picker_type and option.name == "Size" or option.name == "size" %}
+      {% if forloop.index == 1 %}
+        <option
+            selected="selected" disabled
+        >
+            {{- 'Unselected' -}}
+        </option>
+        <option
+          value="{{ value | escape }}"
+        >
+          {% if option_disabled -%}
+            {{- 'products.product.value_unavailable' | t: option_value: value -}}
+          {%- else -%}
+            {{- value -}}
+          {%- endif %}
+        </option>
+      {% else %}
+        <option
+          value="{{ value | escape }}"
+        >
+          {% if option_disabled -%}
+            {{- 'products.product.value_unavailable' | t: option_value: value -}}
+          {%- else -%}
+            {{- value -}}
+          {%- endif %}
+        </option>
+      {% endif %}
+    {% else %}
       <input
         type="radio"
         id="{{ section.id }}-{{ option.position }}-{{ forloop.index0 }}"
@@ -59,10 +87,11 @@
           class="disabled"
         {% endif %}
       >
-      <label for="{{ section.id }}-{{ option.position }}-{{ forloop.index0 }}" {% if option.name == "Color" or option.name == "color" %} onclick="showimags(this)" {%endif%} data-img-alt="{{ value }}">
+      <label for="{{ section.id }}-{{ option.position }}-{{ forloop.index0 }}" onclick="showimags(this)" data-img-alt="{{ value }}">
         {{ value -}}
         <span class="visually-hidden">{{ 'products.product.variant_sold_out_or_unavailable' | t }}</span>
       </label>
+    {% endif %}
   {%- elsif block.settings.picker_type == 'dropdown' -%}
     <option
       value="{{ value | escape }}"

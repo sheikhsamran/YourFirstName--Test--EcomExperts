@@ -145,8 +145,10 @@ class CartItems extends HTMLElement {
         this.querySelectorAll('.loading-overlay').forEach((overlay) => overlay.classList.add('hidden'));
         const errors = document.getElementById('cart-errors') || document.getElementById('CartDrawer-CartErrors');
         errors.textContent = window.cartStrings.error;
+
       })
       .finally(() => {
+        window.location = window.routes.cart_url;
         this.disableLoading(line);
       });
   }

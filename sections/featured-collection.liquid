@@ -71,6 +71,10 @@
         aria-label="{{ 'general.slider.name' | t }}"
       >
         {%- for product in section.settings.collection.products limit: section.settings.products_to_show -%}
+          {% comment %} if is that product (Soft Winter Jacket) it will not show {% endcomment %}
+          {% if product.url contains 'dark-winter-jacket' or product.title contains 'Soft Winter Jacket' %}
+            {% continue %}
+          {% endif %}
           <li
             id="Slide-{{ section.id }}-{{ forloop.index }}"
             class="grid__item{% if show_mobile_slider or show_desktop_slider %} slider__slide{% endif %}"

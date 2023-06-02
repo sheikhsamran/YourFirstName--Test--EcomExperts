@@ -63,6 +63,30 @@ if (!customElements.get('product-form')) {
             }, { once: true });
             quickAddModal.hide(true);
           } else {
+            jQuery.getJSON('/cart.js', function(cart) {
+              for (let i = 0; i < cart.items.length; i++) {
+                if(cart.items[i].handle == 'handbag' & cart.items[i].variant_id == '44863519686934'){
+                  var request = new XMLHttpRequest();
+
+                  request.open('POST', '/cart/add.js', true);
+                  request.setRequestHeader('Content-Type', 'application/json');
+                  request.setRequestHeader('Accept', 'application/json');
+
+                  var requestData = JSON.stringify({
+                    quantity: 1,
+                    id: 44856473878806
+                  });
+
+                  request.onload = function() {
+                    if (request.status >= 200 && request.status < 400) {
+                      window.location = window.routes.cart_url;
+                    }
+                  };
+
+                  request.send(requestData);
+                }
+              }
+            } );
             this.cart.renderContents(response);
           }
         })
