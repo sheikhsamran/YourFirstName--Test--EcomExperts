@@ -145,6 +145,10 @@
               "
             >
               {%- for product in collection.products -%}
+                {% comment %} if is that product (Soft Winter Jacket) it will not show {% endcomment %}
+                {% if product.url contains 'dark-winter-jacket' or product.title contains 'Soft Winter Jacket' %}
+                  {% continue %}
+                {% endif %}
                 {% assign lazy_load = false %}
                 {%- if forloop.index > 2 -%}
                   {%- assign lazy_load = true -%}

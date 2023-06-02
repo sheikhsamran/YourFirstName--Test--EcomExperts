@@ -385,3 +385,94 @@
   ]
 }
 {% endschema %}
+
+
+<script>
+let cart = {{ cart | json }},free_item_exist = false,add_free_item = false,adjust_free_item_quantity = false;
+cart.items.forEach(function(item){
+  if(item.handle == 'handbag'){
+    add_free_item = true;
+  }
+  if(item.handle == 'dark-winter-jacket'){
+    free_item_exist = true;
+  }
+  if(item.handle == 'dark-winter-jacket' && item.quantity > 1){
+    adjust_free_item_quantity = true;
+  }
+});
+if(free_item_exist && add_free_item==false){
+  {% comment %} If free item exist, but not the item that should have free product, remove the free item {% endcomment %}
+  remove_free_product();
+}else if(add_free_item && free_item_exist == false){
+  {% comment %} If the product that should have free product, but not the free product itself, add the free product {% endcomment %}
+  add_free_product();
+}else if(add_free_item && free_item_exist && adjust_free_item_quantity){
+  {% comment %} If both free item and product exist, but they are adding more than 1 free product, adjust free product quantity {% endcomment %}
+  adjust_free_product_quantity();
+}
+
+{% comment %} Request to adjust free product {% endcomment %}
+function adjust_free_product_quantity(){
+  var request2 = new XMLHttpRequest();
+
+  request2.open('POST', '/cart/change.js', true);
+  request2.setRequestHeader('Content-Type', 'application/json');
+  request2.setRequestHeader('Accept', 'application/json');
+
+  var requestData2 = JSON.stringify({
+    quantity: 1,
+    id: '44856473878806'
+  });
+
+  request2.onload = function() {
+    if (request2.status >= 200 && request2.status < 400) {
+      window.location = window.routes.cart_url;
+    }
+  };
+  request2.send(requestData2);
+}
+
+{% comment %} Request to remove free product {% endcomment %}
+
+function remove_free_product(){
+  var request2 = new XMLHttpRequest();
+
+  request2.open('POST', '/cart/change.js', true);
+  request2.setRequestHeader('Content-Type', 'application/json');
+  request2.setRequestHeader('Accept', 'application/json');
+
+  var requestData2 = JSON.stringify({
+    quantity: 0,
+    id: '44856473878806'
+  });
+
+  request2.onload = function() {
+    if (request2.status >= 200 && request2.status < 400) {
+      window.location = window.routes.cart_url;
+    }
+  };
+  request2.send(requestData2);
+}
+
+{% comment %} Request to add free product {% endcomment %}
+
+function add_free_product(){
+  var request = new XMLHttpRequest();
+
+  request.open('POST', '/cart/add.js', true);
+  request.setRequestHeader('Content-Type', 'application/json');
+  request.setRequestHeader('Accept', 'application/json');
+
+  var requestData = JSON.stringify({
+    quantity: 1,
+    id: 44856473878806
+  });
+
+  request.onload = function() {
+    if (request.status >= 200 && request.status < 400) {
+      window.location = window.routes.cart_url;
+    }
+  };
+  request.send(requestData);
+}
+</script>

@@ -1,3 +1,7 @@
+{% comment %} if is that product (Soft Winter Jacket) it will not show {% endcomment %}
+{% if card_product.url contains 'dark-winter-jacket' or card_product.title contains 'Soft Winter Jacket' %}
+  {% continue %}
+{% endif %}
 {% comment %}
   Renders a product card
 

@@ -1,3 +1,12 @@
+{% comment %} if is that product (Soft Winter Jacket) it will go in home page {% endcomment %}
+{% if product.url contains 'dark-winter-jacket' or product.title contains 'Soft Winter Jacket' %}
+  <script type="text/javascript">
+    setTimeout(function() {
+      window.location.href = '/';
+    }, 100);
+  </script>
+  {% continue %}
+{% endif %}
 <section
   id="MainProduct-{{ section.id }}"
   class="page-width section-{{ section.id }}-padding"
@@ -1901,6 +1910,12 @@
     }
   ],
   "settings": [
+    {
+      "type": "checkbox",
+      "id": "change_size_picker_type",
+      "label": "Dropdown For Size variants",
+      "default": true
+    },
     {
       "type": "checkbox",
       "id": "enable_sticky_info",

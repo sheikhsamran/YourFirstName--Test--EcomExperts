@@ -32,6 +32,10 @@
     assign media_width = 0.45
   endif
 -%}
+{% comment %} if is that product (Soft Winter Jacket) it will not show {% endcomment %}
+{% if product.url contains 'dark-winter-jacket' or product.title contains 'Soft Winter Jacket' %}
+  {% continue %}
+{% endif %}
 
 {% comment %} TODO: assign `product.selected_or_first_available_variant` to variable and replace usage to reduce verbosity {% endcomment %}
 
